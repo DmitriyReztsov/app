@@ -1,6 +1,6 @@
 from typing import Any
 
-from behavior_classes import IPlayGround, ICell, ICombination
+from behavior_classes import ICell, ICombination, IPlayGround
 from cell import Cell
 
 

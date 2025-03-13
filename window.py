@@ -1,24 +1,13 @@
+import re
+
 from behavior_classes import IWindow
 from combinations import CombinationTypes, combination_factory
+from playground import PlayGround
 from score import Score
 from step import Step, StepStack
-from playground import PlayGround
 
 
 class Window(IWindow):
-    # def __init__(self, gamer: IGamer) -> None:
-    #     self._gamer = gamer
-    #     self._combinations_list: list[ICombination]
-    #     self._gamer_score: IScore
-    #     self._playground: IPlayGround
-    #     self._current_step: IStep
-
-    #     self._create_combinations_list()
-    #     self._create_score()
-    #     self._create_step_stack()
-    #     self._create_playground()
-    #     self.run()
-
     def _create_score(self) -> None:
         self._gamer_score = Score(self._gamer)
 
@@ -56,7 +45,19 @@ class Window(IWindow):
             self._input_step()
             self._start_process()
 
-    def _input_step(self):
+    def _is_input_valid(self, input_string: str) -> bool:
+        args_list = input_string.split(" ")
+        if len(args_list) != 2:
+            return False
+
+        cell_template = re.compile(r"\b[a-z]{1}[1-9]{1}\b")
+        for coord in args_list:
+            if not cell_template.match(coord):
+                return False
+
+        return True
+
+    def _input_step(self) -> None:
         """предусловия: введены корректные координаты ячейки
         посусловия: создан объект Step"""
         input_string = input(
@@ -66,16 +67,23 @@ class Window(IWindow):
         if input_string == "Q":
             exit()
 
+        if not self._is_input_valid(input_string):
+            print(">>> Ошибка ввода. Повторите попытку.")
+            self._input_step()
+            return
+
         coord_a, coord_b = input_string.split(" ")
         cell_a = self._playground.get_cell_by_text_coord(coord_a)
         if not self._playground.is_get_cell_status_ok():
             print(">>> Ошибка ввода. Повторите попытку.")
             self._input_step()
+            return
 
         cell_b = self._playground.get_cell_by_text_coord(coord_b)
         if not self._playground.is_get_cell_status_ok():
             print(">>> Ошибка ввода. Повторите попытку.")
             self._input_step()
+            return
 
         self._current_step = Step(cell_a, cell_b)
         self._step_stack.add_step(

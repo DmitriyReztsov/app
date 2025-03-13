@@ -1,6 +1,6 @@
-from collections import namedtuple
-from typing import Optional, Any
 import random
+from collections import namedtuple
+from typing import Any, Optional
 
 
 class IWindow:

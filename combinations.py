@@ -1,6 +1,6 @@
 from typing import Generator
 
-from behavior_classes import ICombination, ICell
+from behavior_classes import ICell, ICombination
 from bonuses import BonusCross, BonusLine
 
 
