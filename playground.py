@@ -109,9 +109,9 @@ class PlayGround(IPlayGround):
         """
 
         values_list = []
-        for y in self.dimension.y:
+        for y in range(self.dimension.y):
             row_values = []
-            for x in self.dimension.x:
+            for x in range(self.dimension.x):
                 cell = self._get_cell(x, y)
                 row_values.append(cell.value)
             values_list.append(row_values)
